@@ -25,6 +25,27 @@ export const EntryProvider = props => {
       .then(setEntry);;
   };
 
+  const addEntry = entry => {
+    return fetch("http://localhost:8088/entries", {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify(entry)
+    })
+        .then(getEntries)
+}
+
+const updateEntry = entry => {
+  return fetch(`http://localhost:8088/entries/${entry.id}`, {
+      method: "PUT",
+      headers: {
+          "Content-Type": "application/json"
+      },
+      body: JSON.stringify(entry)
+  })
+      .then(getEntries)
+}
   const deleteEntry = entry => {
     return fetch(`http://localhost:8088/entries/${entry.id}`, {
       method: "DELETE"
@@ -33,7 +54,7 @@ export const EntryProvider = props => {
 
   return (
     <EntryContext.Provider value={{
-        entries, getEntries, deleteEntry, getEntryById, entry, setEntry
+        entries, getEntries, deleteEntry, getEntryById, entry, setEntry, addEntry, updateEntry
     }}>
       {props.children}
     </EntryContext.Provider>
